@@ -1,0 +1,23 @@
+{
+  "name": "client-router",
+  "version": "1.0.0",
+  "description": "a client-router UI test implementation",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karlpokus/client-router.git"
+  },
+  "author": "Karl Pokus <karl.pokus@gmail.com> (https://github.com/karlpokus)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/karlpokus/client-router/issues"
+  },
+  "homepage": "https://github.com/karlpokus/client-router#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "klocka": "^1.1.0"
+  }
+}
