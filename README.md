@@ -5,7 +5,8 @@ a client-router UI test implementation. A work in progress.
 - [x] use achors
 - [x] templates
 - [x] route-map
-- [ ] fix include query param on init
+- [x] fix include query param on init
+- [ ] fix template and main element caching
 
 # Licence
 MIT
