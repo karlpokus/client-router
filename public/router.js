@@ -46,20 +46,30 @@ var router = {
       router.go(path, false);
     });
   },
+  bindRouteHandlers: function(arr) {
+    arr.forEach(function(o){
+      for (var k in o) {
+        if (typeof o[k] === 'function') {
+          o[k] = o[k].bind(o);
+        }
+      }
+    });
+  },
   URLparser: function(str) {
     var out = {};
   
-    if (/\?/.test(str)) { // has ?
+    if (/\?/.test(str)) {
       var majorParts = str.split('?');
       out.path = majorParts[0];
-      out.query = {};
-
-      majorParts[1].split('&').forEach(function(str){
-        var parts = str.split('='),
-            k = parts[0],
-            v = parts[1];
-        out.query[k] = v;
-      });
+      out.query = majorParts[1]
+        .split('&')
+        .reduce(function(base, str){
+          var minorParts = str.split('='),
+            k = minorParts[0],
+            v = minorParts[1];
+          base[k] = v;
+          return base;
+      }, {});
 
     } else {
       out.path = str;
@@ -86,28 +96,33 @@ var router = {
   }
 };
 
+var view = {
+  el: $('.content'),
+  home: function() {
+    this.el.empty();
+  },
+  item: function(query) {
+    this.el.empty().hbs(tmpl.item, db.findById(query.id));
+  },
+  items: function() {
+    this.el.empty().hbs(tmpl.items, db.data);
+  },
+  about: function() {
+    this.el.empty().text('This is an awesome place to buy epic stuff');
+  }
+};
+
 var app = {
   init: function() {
+    router.bindRouteHandlers([view]);
     router.hijackEvents();
-    router.add('/', app.showHome);
-    router.add('/item', app.showItem);
-    router.add('/items', app.showItems);
-    router.add('/about', app.showAbout);
+    router.add('/', view.home);
+    router.add('/item', view.item);
+    router.add('/items', view.items);
+    router.add('/about', view.about);
     var path = window.location.pathname + window.location.search;
     router.go(path, false);
-  },
-  showHome: function() {
-    $('.content').empty();
-  },
-  showItem: function(query) {
-    $('.content').empty().hbs(tmpl.item, db.findById(query.id));
-  },
-  showItems: function() {
-    $('.content').empty().hbs(tmpl.items, db.data);
-  },
-  showAbout: function() {
-    $('.content').empty().text('This is an awesome place to buy epic stuff');
-  }
+  }  
 };
 
 app.init();
